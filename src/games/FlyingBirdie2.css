@@ -1,0 +1,27 @@
+.flying-birdie-2-wrapper {
+  width: 100%;
+  max-width: 500px;
+  height: 700px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.flying-birdie-2-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .flying-birdie-2-wrapper {
+    height: 600px;
+  }
+}
+

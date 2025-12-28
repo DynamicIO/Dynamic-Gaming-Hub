@@ -1,0 +1,214 @@
+.flying-birdie-container {
+  width: 100%;
+  max-width: 500px;
+  height: 700px;
+  margin: 0 auto;
+  position: relative;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.flying-birdie-game-area {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.flying-birdie-sky {
+  width: 100%;
+  height: calc(100% - 80px);
+  background: #87CEEB;
+  position: relative;
+}
+
+.flying-birdie-ground {
+  height: 80px;
+  background: #8B4513;
+  position: relative;
+}
+
+.flying-birdie-grass {
+  height: 15px;
+  background: #228B22;
+}
+
+.flying-birdie-score-container {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 30px;
+  border-radius: 25px;
+  z-index: 1000;
+}
+
+.flying-birdie-score-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: #2C3E50;
+  text-align: center;
+}
+
+.flying-birdie-pipe {
+  position: absolute;
+  width: 60px;
+  background: #228B22;
+  border: 3px solid #006400;
+}
+
+.flying-birdie-pipe-cap {
+  position: absolute;
+  bottom: 0;
+  left: -5px;
+  right: -5px;
+  height: 25px;
+  background: #228B22;
+  border: 3px solid #006400;
+}
+
+.flying-birdie-pipe-cap-top {
+  top: 0;
+  bottom: auto;
+}
+
+.flying-birdie-bird {
+  position: absolute;
+  left: 100px;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease-out;
+}
+
+.flying-birdie-bird-image {
+  width: 58px;
+  height: 58px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.flying-birdie-big-bird-image {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.flying-birdie-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.flying-birdie-menu-box {
+  background: #FFF;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  width: 85%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.flying-birdie-title {
+  font-size: 48px;
+  font-weight: bold;
+  color: #E74C3C;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.flying-birdie-game-over-title {
+  font-size: 42px;
+  font-weight: bold;
+  color: #E74C3C;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.flying-birdie-instructions {
+  font-size: 18px;
+  color: #2C3E50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.flying-birdie-final-score {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2C3E50;
+  margin: 15px 0;
+}
+
+.flying-birdie-best-score {
+  font-size: 20px;
+  color: #7F8C8D;
+  margin-bottom: 30px;
+}
+
+.flying-birdie-new-record {
+  font-size: 18px;
+  font-weight: bold;
+  color: #F39C12;
+  margin: 10px 0;
+}
+
+.flying-birdie-start-button {
+  background: #3498DB;
+  color: #FFF;
+  border: none;
+  padding: 18px 50px;
+  border-radius: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.flying-birdie-start-button:hover {
+  background: #2980B9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.flying-birdie-start-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .flying-birdie-container {
+    height: 600px;
+  }
+  
+  .flying-birdie-menu-box {
+    padding: 30px 20px;
+  }
+  
+  .flying-birdie-title {
+    font-size: 36px;
+  }
+  
+  .flying-birdie-game-over-title {
+    font-size: 32px;
+  }
+}
+

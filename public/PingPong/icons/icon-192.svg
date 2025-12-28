@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#00f0ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="192" height="192" rx="28" fill="#060812"/>
+  <circle cx="96" cy="96" r="70" fill="url(#g)"/>
+  <g filter="url(#f)">
+    <rect x="24" y="64" width="16" height="64" rx="8" fill="#a8ff00"/>
+    <rect x="152" y="64" width="16" height="64" rx="8" fill="#ff2bd9"/>
+    <circle cx="96" cy="96" r="12" fill="#00f0ff"/>
+  </g>
+</svg>
+
+
+
+

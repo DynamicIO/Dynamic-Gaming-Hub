@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Banana Clicking Game</title>
+    <link rel="icon" type="image/png" href="ChatGPT Image Apr 19, 2025, 02_30_27 PM.png">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        body {
+            background-color: #FFD700;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            touch-action: manipulation;
+            position: relative;
+        }
+        html, body {
+            touch-action: none;
+            overscroll-behavior: none;
+        }
+        /* Prevent zoom on desktop browsers */
+        html {
+            zoom: 1 !important;
+            -moz-transform: scale(1) !important;
+            -moz-transform-origin: 0 0 !important;
+        }
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .game-header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0;
+            width: auto;
+            white-space: nowrap;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        #banana {
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: none;
+            max-width: 80vw;
+            max-height: 80vw;
+            object-fit: contain;
+        }
+        #banana:active {
+            transform: scale(0.95);
+        }
+        #stats {
+            margin-top: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+        #timer {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .mode-buttons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        .mode-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            min-width: 120px;
+        }
+        .mode-button:hover {
+            background-color: #45a049;
+        }
+        #game-over {
+            display: none;
+            margin-top: 20px;
+            font-size: 24px;
+            text-align: center;
+            animation: celebrate 1s ease-in-out;
+            padding: 0 20px;
+        }
+        #restart-button {
+            margin-top: 20px;
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            min-width: 120px;
+        }
+        #restart-button:hover {
+            background-color: #0b7dda;
+        }
+        .powered-by {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.5);
+            font-style: italic;
+        }
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            margin-top: 10px;
+            padding: 10px 8px;
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            max-width: 320px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .leaderboard h2 {
+            display: none;
+        }
+
+        .leaderboard-modes {
+            display: block;
+        }
+
+        .leaderboard-mode {
+            margin-bottom: 0;
+        }
+
+        .leaderboard-mode h3 {
+            color: #4CAF50;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .leaderboard-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 6px;
+            margin-bottom: 4px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.07);
+        }
+
+        .leaderboard-entry .position {
+            font-size: 13px;
+            margin-right: 5px;
+        }
+
+        .leaderboard-entry .name {
+            flex: 1;
+            text-align: left;
+            font-weight: bold;
+            color: #333;
+            font-size: 13px;
+        }
+
+        .leaderboard-entry .score {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .game-header {
+                font-size: 36px;
+                top: 10px;
+            }
+            #banana {
+                width: 150px;
+                height: 150px;
+            }
+            #stats {
+                font-size: 20px;
+            }
+            #timer {
+                font-size: 30px;
+            }
+            .mode-button, #restart-button {
+                padding: 12px 20px;
+                font-size: 16px;
+                min-width: 100px;
+            }
+            #game-over {
+                font-size: 20px;
+            }
+            .powered-by {
+                font-size: 10px;
+            }
+            .leaderboard {
+                margin-top: 8px;
+                padding: 7px 4px;
+                max-width: 98vw;
+                font-size: 12px;
+            }
+            .leaderboard-mode h3 {
+                font-size: 13px;
+            }
+            .leaderboard-entry {
+                padding: 3px 4px;
+                font-size: 12px;
+            }
+            .leaderboard-entry .name, .leaderboard-entry .score, .leaderboard-entry .position {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .game-header {
+                font-size: 28px;
+                top: 5px;
+            }
+            #banana {
+                width: 120px;
+                height: 120px;
+            }
+            #stats {
+                font-size: 18px;
+            }
+            #timer {
+                font-size: 26px;
+            }
+            .mode-button, #restart-button {
+                padding: 10px 15px;
+                font-size: 14px;
+                min-width: 80px;
+            }
+            #game-over {
+                font-size: 18px;
+            }
+            .powered-by {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">Click the Banana</div>
+    <div class="mode-buttons">
+        <button class="mode-button" data-time="15">15 Seconds</button>
+        <button class="mode-button" data-time="30">30 Seconds</button>
+        <button class="mode-button" data-time="60">60 Seconds</button>
+    </div>
+    <div id="timer">60</div>
+    <img id="banana" src="ChatGPT Image Apr 19, 2025, 02_30_27 PM.png" alt="Banana">
+    <div id="stats">
+        <p>Clicks: <span id="clicks">0</span></p>
+        <p>Clicks per minute: <span id="cpm">0</span></p>
+    </div>
+    <div id="game-over"></div>
+    <button id="restart-button">Play Again</button>
+    
+    <!-- Leaderboard Section -->
+    <div class="leaderboard" id="leaderboard" style="display: none;">
+        <div class="leaderboard-modes">
+            <div class="leaderboard-mode" id="leaderboard-15" style="display: none;">
+                <h3>15 Seconds Leaderboard</h3>
+                <div class="leaderboard-entry">
+                    <span class="position">🥇</span>
+                    <span class="name">Beso</span>
+                    <span class="score">211</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span class="position">🥈</span>
+                    <span class="name">Mark</span>
+                    <span class="score">186</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span class="position">🥉</span>
+                    <span class="name">Ariel</span>
+                    <span class="score">169</span>
+                </div>
+            </div>
+            <div class="leaderboard-mode" id="leaderboard-30" style="display: none;">
+                <h3>30 Seconds Leaderboard</h3>
+                <div class="leaderboard-entry">
+                    <span class="position">🥇</span>
+                    <span class="name">TBD</span>
+                    <span class="score">-</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span class="position">🥈</span>
+                    <span class="name">TBD</span>
+                    <span class="score">-</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span class="position">🥉</span>
+                    <span class="name">TBD</span>
+                    <span class="score">-</span>
+                </div>
+            </div>
+            <div class="leaderboard-mode" id="leaderboard-60" style="display: none;">
+                <h3>60 Seconds Leaderboard</h3>
+                <div class="leaderboard-entry">
+                    <span class="position">🥇</span>
+                    <span class="name">TBD</span>
+                    <span class="score">-</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span class="position">🥈</span>
+                    <span class="name">TBD</span>
+                    <span class="score">-</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span class="position">🥉</span>
+                    <span class="name">TBD</span>
+                    <span class="score">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="powered-by">Powered by Dynamic.IO</div>
+
+    <script>
+        let clicks = 0;
+        let timeLeft = 60;
+        let timer;
+        let gameStarted = false;
+        let selectedTime = 60;
+
+        const banana = document.getElementById('banana');
+        const clicksDisplay = document.getElementById('clicks');
+        const cpmDisplay = document.getElementById('cpm');
+        const timerDisplay = document.getElementById('timer');
+        const gameOverDisplay = document.getElementById('game-over');
+        const restartButton = document.getElementById('restart-button');
+        const modeButtons = document.querySelectorAll('.mode-button');
+        const leaderboard = document.getElementById('leaderboard');
+        const leaderboard15 = document.getElementById('leaderboard-15');
+        const leaderboard30 = document.getElementById('leaderboard-30');
+        const leaderboard60 = document.getElementById('leaderboard-60');
+
+
+        // Create victory sound
+        const victorySound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+
+        function playVictorySound() {
+            victorySound.play().catch(e => console.log("Audio play failed:", e));
+        }
+
+        function celebrate() {
+            // Play victory sound
+            playVictorySound();
+            
+            // Create confetti effect
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function resetGame() {
+            clicks = 0;
+            gameStarted = false;
+            timeLeft = selectedTime;
+            clicksDisplay.textContent = '0';
+            cpmDisplay.textContent = '0';
+            banana.style.display = 'none';
+            banana.style.pointerEvents = 'auto';
+            timerDisplay.style.display = 'none';
+            gameOverDisplay.style.display = 'none';
+            restartButton.style.display = 'none';
+            document.querySelector('.mode-buttons').style.display = 'flex';
+            leaderboard.style.display = 'none';
+            leaderboard15.style.display = 'none';
+            leaderboard30.style.display = 'none';
+            leaderboard60.style.display = 'none';
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        modeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                selectedTime = parseInt(button.dataset.time);
+                timeLeft = selectedTime;
+                timerDisplay.textContent = timeLeft;
+                banana.style.display = 'block';
+                timerDisplay.style.display = 'block';
+                document.querySelector('.mode-buttons').style.display = 'none';
+                leaderboard.style.display = 'block';
+                leaderboard15.style.display = 'none';
+                leaderboard30.style.display = 'none';
+                leaderboard60.style.display = 'none';
+                if (selectedTime === 15) {
+                    leaderboard15.style.display = 'block';
+                } else if (selectedTime === 30) {
+                    leaderboard30.style.display = 'block';
+                } else if (selectedTime === 60) {
+                    leaderboard60.style.display = 'block';
+                }
+            });
+        });
+
+        // Add touch event listener for mobile devices
+        banana.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (!gameStarted) {
+                startGame();
+            }
+            clicks++;
+            clicksDisplay.textContent = clicks;
+            cpmDisplay.textContent = Math.round((clicks / (selectedTime - timeLeft)) * 60);
+        });
+
+        banana.addEventListener('click', () => {
+            if (!gameStarted) {
+                startGame();
+            }
+            clicks++;
+            clicksDisplay.textContent = clicks;
+            cpmDisplay.textContent = Math.round((clicks / (selectedTime - timeLeft)) * 60);
+        });
+
+        function startGame() {
+            gameStarted = true;
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    banana.style.pointerEvents = 'none';
+                    gameOverDisplay.textContent = `Game Over! You clicked ${clicks} times!`;
+                    gameOverDisplay.style.display = 'block';
+                    restartButton.style.display = 'block';
+                    celebrate();
+                }
+            }, 1000);
+        }
+
+        restartButton.addEventListener('click', resetGame);
+
+        // Prevent double-tap zoom on mobile devices
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Prevent pinch-zoom and gesture zoom on iOS Safari
+        ['gesturestart', 'gesturechange', 'gestureend'].forEach(function(type) {
+            document.addEventListener(type, function(e) {
+                e.preventDefault();
+            }, { passive: false });
+        });
+
+        // Prevent zoom on desktop browsers
+        document.addEventListener('wheel', function(event) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && (event.key === '+' || event.key === '-' || event.key === '=')) {
+                event.preventDefault();
+            }
+        });
+
+        // Prevent pinch-zoom on all devices
+        document.addEventListener('touchmove', function(event) {
+            if (event.touches && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html> 
