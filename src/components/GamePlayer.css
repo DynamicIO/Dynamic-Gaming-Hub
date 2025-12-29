@@ -3,18 +3,6 @@
   display: flex;
   flex-direction: column;
   background: var(--bg-primary);
-  animation: fadeInSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes fadeInSlide {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 .game-header {
@@ -25,7 +13,6 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -37,49 +24,24 @@
   font-weight: 600;
   padding: 0.75rem 1.25rem;
   border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   position: relative;
-  overflow: hidden;
-  /* Smooth button interaction */
-}
-
-.back-button::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.2), transparent);
-  transition: left 0.5s ease;
 }
 
 .back-button:hover {
   color: var(--accent-primary);
-  background: var(--bg-tertiary);
   border-color: var(--accent-primary);
-  transform: translateX(-3px);
-  box-shadow: 0 4px 12px var(--accent-glow);
-}
-
-.back-button:hover::after {
-  left: 100%;
 }
 
 .back-button::before {
   content: '←';
   display: inline-block;
   margin-right: 0.5rem;
-  transition: transform 0.3s ease;
-}
-
-.back-button:hover::before {
-  transform: translateX(-3px);
 }
 
 .game-title {
@@ -88,21 +50,10 @@
   margin: 0;
   font-weight: 700;
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: titleGradient 3s ease infinite;
   letter-spacing: -0.5px;
-}
-
-@keyframes titleGradient {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 .game-container {
@@ -116,23 +67,8 @@
   position: relative;
 }
 
-.game-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .game-container > * {
   position: relative;
-  z-index: 1;
 }
 
 .game-not-found {

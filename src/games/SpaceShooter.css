@@ -1,0 +1,503 @@
+.space-shooter-container {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.space-shooter-wrapper {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.space-shooter-menu {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.space-shooter-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.space-shooter-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.space-shooter-high-score {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.high-score-label {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.high-score-value {
+  color: var(--accent-primary);
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.space-shooter-controls {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.space-shooter-controls h3 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.controls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.control-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.control-key {
+  background: var(--bg-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-size: 0.9rem;
+  min-width: 80px;
+  text-align: center;
+}
+
+.control-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.space-shooter-start-btn {
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.space-shooter-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+}
+
+.space-shooter-game {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.space-shooter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.space-shooter-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.space-shooter-pause-btn {
+  padding: 0.5rem 1.25rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.space-shooter-pause-btn:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-secondary);
+}
+
+.space-shooter-canvas {
+  width: 600px;
+  height: 800px;
+  background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 100%);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.space-shooter-player {
+  position: absolute;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 0 20px var(--accent-glow);
+  z-index: 10;
+  transition: transform 0.1s ease;
+  animation: playerPulse 2s ease-in-out infinite;
+}
+
+.space-shooter-player.shielded {
+  box-shadow: 0 0 30px rgba(78, 205, 196, 0.8);
+  border: 3px solid #4ecdc4;
+  animation: shieldPulse 1s ease-in-out infinite;
+}
+
+@keyframes playerPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--accent-glow);
+  }
+}
+
+@keyframes shieldPulse {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(78, 205, 196, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(78, 205, 196, 1);
+  }
+}
+
+.space-shooter-bullet {
+  position: absolute;
+  background: linear-gradient(135deg, #ffe66d 0%, #ff6b6b 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 230, 109, 0.8);
+  z-index: 5;
+  animation: bulletGlow 0.5s ease-in-out infinite;
+}
+
+@keyframes bulletGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 230, 109, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 230, 109, 1);
+  }
+}
+
+.space-shooter-enemy {
+  position: absolute;
+  background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+  z-index: 5;
+  animation: enemyFloat 2s ease-in-out infinite;
+}
+
+@keyframes enemyFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.space-shooter-powerup {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  z-index: 8;
+  animation: powerupFloat 1.5s ease-in-out infinite;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+@keyframes powerupFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  }
+}
+
+.active-powerups {
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+}
+
+.active-powerups h4 {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.powerup-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.powerup-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-secondary);
+  border: 2px solid;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.powerup-icon {
+  font-size: 1.2rem;
+}
+
+.powerup-name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.powerup-timer {
+  color: var(--accent-primary);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.space-shooter-instructions {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.space-shooter-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  z-index: 20;
+}
+
+.space-shooter-pause-menu,
+.space-shooter-result {
+  text-align: center;
+  padding: 2rem;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  max-width: 400px;
+  width: 90%;
+}
+
+.pause-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pause-hint {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.pause-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.result-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.result-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.result-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+}
+
+.result-stat.new-record {
+  background: rgba(255, 215, 0, 0.2);
+  border: 2px solid #ffd700;
+}
+
+.result-label {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.result-value {
+  color: var(--accent-primary);
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.result-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.space-shooter-btn {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.space-shooter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.space-shooter-btn.secondary {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.space-shooter-btn.secondary:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-secondary);
+}
+
+@media (max-width: 768px) {
+  .space-shooter-container {
+    padding: 1rem;
+  }
+  
+  .space-shooter-wrapper {
+    padding: 1.5rem;
+  }
+  
+  .space-shooter-title {
+    font-size: 2rem;
+  }
+  
+  .space-shooter-canvas {
+    width: 100%;
+    max-width: 600px;
+    height: 600px;
+  }
+  
+  .space-shooter-player {
+    font-size: 1.5rem;
+  }
+  
+  .space-shooter-enemy {
+    font-size: 1.2rem;
+  }
+  
+  .space-shooter-powerup {
+    font-size: 1.2rem;
+  }
+}
+
